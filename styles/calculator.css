@@ -1,0 +1,19 @@
+/*#buttons {
+    display: grid;
+    box-sizing: border-box;
+}*/
+
+#numbers {
+    display: grid;
+    float: left;
+    grid-template-columns: auto auto auto;
+    width: 75%;
+    box-sizing: border-box;
+}
+
+#operators {
+    display: grid;
+    float: left;
+    width: 25%;
+    box-sizing: border-box;
+}
