@@ -23,6 +23,7 @@ function divide(a, b) {
 }
 
 let displayNumber = 0;
+let clearOnNextDigit = false;
 
 function updateDisplay(newNumber) {
     displayNumber = newNumber;
@@ -32,10 +33,11 @@ function updateDisplay(newNumber) {
 function enterDigit(d) {
     let digit = parseInt(d);
     if (digit >= 0 && digit <= 9) {
-        if (operator != '') {
+        if (clearOnNextDigit) {
             clearDisplay();
         }
-        updateDisplay(displayNumber * 10 + digit);        
+        let sign = displayNumber < 0 ? -1 : 1;
+        updateDisplay(displayNumber * 10 + digit * sign);
     }
 }
 const numberButtons = document.querySelectorAll("#numbers button");
@@ -43,18 +45,43 @@ numberButtons.forEach(button => button.addEventListener('click', function(e) {
     enterDigit(this.dataset.value);
 }));
 
+function clearAll() {
+    operators = [];
+    operands = [];
+    clearDisplay();
+}
+
 function clearDisplay() {
     updateDisplay(0);
+    clearOnNextDigit = false;
 }
-document.getElementById('button-clear').addEventListener('click', clearDisplay);
+document.getElementById('button-clear').addEventListener('click', clearAll);
 
 
-let operator = '';
-let operandA = '';
-function enterOperator(operatorValue) {
-    //to do: handle order of operations correctly
-    operator = operatorValue;
-    operandA = displayNumber;
+let operators = [];
+let operands = [];
+function enterOperator(operator) {
+
+    if (operators.length == 0 || operatorRank(operator) < operatorRank(operators[operators.length - 1])) {
+        operators.push(operator);
+        operands.push(displayNumber);
+    } else {
+        let newDisplayNumber = displayNumber;
+        while (operators.length > 0 && operatorRank(operator) >= operatorRank(operators[operators.length - 1])) {
+            newDisplayNumber = operate(operands.pop(), newDisplayNumber, window[operators.pop()])
+        }
+        updateDisplay(newDisplayNumber);
+        operators.push(operator);
+        operands.push(displayNumber);
+    }
+    clearOnNextDigit = true;
+}
+
+function operatorRank(operator) {
+    if (operator == "multiply" || operator == "divide")
+        return 1;
+    else
+        return 2;
 }
 
 const operatorButtons = document.querySelectorAll('.button.operator');
@@ -63,9 +90,11 @@ operatorButtons.forEach(button => button.addEventListener('click', function(e) {
 }));
 
 function equals() {
-    //to do: clear display on next enterDigit
-    updateDisplay(operate(operandA, displayNumber, window[operator]));
-    operator = '';
-    operandA = '';
+    let newDisplayNumber = displayNumber;
+    while (operators.length > 0) {
+        newDisplayNumber = operate(operands.pop(), newDisplayNumber, window[operators.pop()])
+    }
+    updateDisplay(newDisplayNumber);
+    clearOnNextDigit = true;
 }
 document.getElementById('button-equals').addEventListener('click', equals);
