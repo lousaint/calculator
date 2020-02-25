@@ -98,3 +98,21 @@ function equals() {
     clearOnNextDigit = true;
 }
 document.getElementById('button-equals').addEventListener('click', equals);
+
+function mapKey(eventKey) {
+    return eventKey == "=" ? "Enter" :
+        eventKey == "c" ? "Escape" :
+        
+        eventKey;
+}
+
+function parseKey(e) {
+    let key = mapKey(e.key);
+
+    let button = document.querySelector(`button[data-key="${key}"]`);
+
+    if (button != null) {
+        button.click();
+    }
+}
+window.addEventListener('keydown', parseKey);
