@@ -27,7 +27,11 @@ let clearOnNextDigit = false;
 
 function updateDisplay(newNumber) {
     displayNumber = newNumber;
-    document.getElementById('display').textContent = displayNumber;
+    let displayText = displayNumber.toString();
+    if (displayText.length > 10) {
+        displayText = displayNumber.toPrecision(10);
+    }
+    document.getElementById('display').textContent = displayText;
 }
 
 function enterDigit(d) {
