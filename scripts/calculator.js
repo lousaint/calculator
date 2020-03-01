@@ -66,6 +66,10 @@ let operators = [];
 let operands = [];
 function enterOperator(operator) {
 
+    if (clearOnNextDigit) {
+        operators.pop();
+    }
+
     if (operators.length == 0 || operatorRank(operator) < operatorRank(operators[operators.length - 1])) {
         operators.push(operator);
         operands.push(displayNumber);
