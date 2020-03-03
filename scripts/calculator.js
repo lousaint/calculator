@@ -52,6 +52,8 @@ numberButtons.forEach(button => button.addEventListener('click', function(e) {
 function clearAll() {
     operators = [];
     operands = [];
+    lastOperator = '';
+    lastOperand = '';
     clearDisplay();
 }
 
@@ -97,10 +99,19 @@ operatorButtons.forEach(button => button.addEventListener('click', function(e) {
     enterOperator(this.dataset.value);
 }));
 
+let lastOperator = '';
+let lastOperand = '';
 function equals() {
     let newDisplayNumber = displayNumber;
-    while (operators.length > 0) {
-        newDisplayNumber = operate(operands.pop(), newDisplayNumber, window[operators.pop()])
+    
+    if (operators.length == 0) {
+        newDisplayNumber = operate(newDisplayNumber, lastOperand, window[lastOperator]);
+    } else {
+        lastOperator = operators[operators.length - 1];
+        lastOperand = displayNumber;
+        while (operators.length > 0) {
+            newDisplayNumber = operate(operands.pop(), newDisplayNumber, window[operators.pop()]);
+        }
     }
     updateDisplay(newDisplayNumber);
     clearOnNextDigit = true;
