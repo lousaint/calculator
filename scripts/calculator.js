@@ -24,13 +24,18 @@ function divide(a, b) {
 
 let displayNumber = 0;
 let clearOnNextDigit = false;
+let decimalPlace = 0;
 
 function updateDisplay(newNumber) {
     displayNumber = newNumber;
     let displayText = displayNumber.toString();
     if (displayText.length > 10) {
-        displayText = displayNumber.toPrecision(10);
+        displayText = displayNumber.toPrecision(10).replace(/0+$/,'');
     }
+
+    if (decimalPlace == -1)
+        displayText = displayNumber + ".";
+
     document.getElementById('display').textContent = displayText;
 }
 
@@ -41,13 +46,26 @@ function enterDigit(d) {
             clearDisplay();
         }
         let sign = displayNumber < 0 ? -1 : 1;
-        updateDisplay(displayNumber * 10 + digit * sign);
+
+        if (decimalPlace == 0) {
+            updateDisplay(displayNumber * 10 + digit * sign);
+        } else {
+            updateDisplay(displayNumber + digit * Math.pow(10, decimalPlace--) * sign);
+        }
     }
 }
-const numberButtons = document.querySelectorAll("#numbers button");
+const numberButtons = document.querySelectorAll(".button.number");
 numberButtons.forEach(button => button.addEventListener('click', function(e) {
     enterDigit(this.dataset.value);
 }));
+
+function enterDecimalPoint() {
+    if (decimalPlace == 0) {
+        decimalPlace = -1;
+        updateDisplay(displayNumber);
+    }
+}
+document.getElementById('button-decimal').addEventListener('click', enterDecimalPoint);
 
 function clearAll() {
     operators = [];
@@ -59,6 +77,7 @@ function clearAll() {
 
 function clearDisplay() {
     updateDisplay(0);
+    decimalPlace = 0;
     clearOnNextDigit = false;
 }
 document.getElementById('button-clear').addEventListener('click', clearAll);
@@ -104,9 +123,9 @@ let lastOperand = '';
 function equals() {
     let newDisplayNumber = displayNumber;
     
-    if (operators.length == 0) {
+    if (operators.length == 0 && lastOperator != '') {
         newDisplayNumber = operate(newDisplayNumber, lastOperand, window[lastOperator]);
-    } else {
+    } else if (operators.length > 0) {
         lastOperator = operators[operators.length - 1];
         lastOperand = displayNumber;
         while (operators.length > 0) {
@@ -120,8 +139,7 @@ document.getElementById('button-equals').addEventListener('click', equals);
 
 function mapKey(eventKey) {
     return eventKey == "=" ? "Enter" :
-        eventKey == "c" ? "Escape" :
-        
+        eventKey == "c" ? "Escape" :        
         eventKey;
 }
 
