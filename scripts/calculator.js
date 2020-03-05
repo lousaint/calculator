@@ -28,7 +28,7 @@ let decimalPlace = 0;
 
 function updateDisplay(newNumber) {
     displayNumber = newNumber;
-    let displayText = displayNumber.toFixed(decimalPlace > 0 ? decimalPlace - 1: 0);
+    let displayText = decimalPlace > 0 ? displayNumber.toFixed(decimalPlace - 1) : displayNumber.toString();
     let precision = 13;
     while (displayText.length > 13) {
         displayText = displayNumber.toPrecision(precision--).replace(/([0-9.]*[1-9])\.?0+((e[+-][0-9]+)?)$/,"$1$2");
