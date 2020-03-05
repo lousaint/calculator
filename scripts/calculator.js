@@ -28,12 +28,13 @@ let decimalPlace = 0;
 
 function updateDisplay(newNumber) {
     displayNumber = newNumber;
-    let displayText = displayNumber.toString();
-    if (displayText.length > 10) {
-        displayText = displayNumber.toPrecision(10).replace(/0+$/,'');
+    let displayText = displayNumber.toFixed(decimalPlace > 0 ? decimalPlace - 1: 0);
+    let precision = 13;
+    while (displayText.length > 13) {
+        displayText = displayNumber.toPrecision(precision--).replace(/([0-9.]*[1-9])\.?0+((e[+-][0-9]+)?)$/,"$1$2");
     }
 
-    if (decimalPlace == -1)
+    if (decimalPlace == 1)
         displayText = displayNumber + ".";
 
     document.getElementById('display').textContent = displayText;
@@ -50,7 +51,7 @@ function enterDigit(d) {
         if (decimalPlace == 0) {
             updateDisplay(displayNumber * 10 + digit * sign);
         } else {
-            updateDisplay(displayNumber + digit * Math.pow(10, decimalPlace--) * sign);
+            updateDisplay(displayNumber + digit * Math.pow(10, -1 * decimalPlace++) * sign);
         }
     }
 }
@@ -61,7 +62,7 @@ numberButtons.forEach(button => button.addEventListener('click', function(e) {
 
 function enterDecimalPoint() {
     if (decimalPlace == 0) {
-        decimalPlace = -1;
+        decimalPlace = 1;
         updateDisplay(displayNumber);
     }
 }
