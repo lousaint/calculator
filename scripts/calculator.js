@@ -77,8 +77,8 @@ function clearAll() {
 }
 
 function clearDisplay() {
-    updateDisplay(0);
     decimalPlace = 0;
+    updateDisplay(0);
     clearOnNextDigit = false;
 }
 document.getElementById('button-clear').addEventListener('click', clearAll);
