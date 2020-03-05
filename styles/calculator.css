@@ -1,15 +1,29 @@
 #calculator {
-    max-width: 500px;
+    width: 300px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 2rem;
+    background-color: teal;
+    padding: 0.5rem;
+    border: 2px outset teal;
+    border-radius: 12px;
+}
+#calculator:after {
+    clear:both;
+    content:'';
+    display: block;
 }
 
 #display {
+    background-color:paleturquoise;
+    color:seagreen;
     font-size:2.5rem;
     text-align: right;
     height:3rem;
-    border: 1px solid black;
-    padding: 0 .5rem 0 .5rem;
+    border: 2px inset teal;
+    border-radius: 12px;
+    padding: 0 0.5rem 0 0.5rem;
+    margin: 0.125rem;
 }
 
 #functions {
@@ -40,4 +54,6 @@
 
 .button {
     font-size:2rem;
+    border-radius:12px;
+    margin:0.125rem;
 }
