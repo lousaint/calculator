@@ -61,6 +61,10 @@ numberButtons.forEach(button => button.addEventListener('click', function(e) {
 }));
 
 function enterDecimalPoint() {
+
+    if (clearOnNextDigit)
+        clearDisplay();
+
     if (decimalPlace == 0) {
         decimalPlace = 1;
         updateDisplay(displayNumber);
