@@ -33,6 +33,14 @@
     box-sizing: border-box;
 }
 
+#button-clear {
+    grid-column: 1/6;
+}
+
+#button-backspace {
+    grid-column: 6/6;
+}
+
 #numbers {
     display: grid;
     float: left;

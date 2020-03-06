@@ -72,6 +72,19 @@ function enterDecimalPoint() {
 }
 document.getElementById('button-decimal').addEventListener('click', enterDecimalPoint);
 
+
+function backSpace() {
+    if (decimalPlace == 0) {
+        updateDisplay(Math.floor(displayNumber / 10));
+    } else if (decimalPlace == 1) {
+        decimalPlace = 0;
+        updateDisplay(displayNumber);
+    } else {
+        updateDisplay(Number(Math.floor(displayNumber + 'e' + (--decimalPlace - 1))+'e-'+ (decimalPlace - 1)));
+    }
+}
+document.getElementById('button-backspace').addEventListener('click', backSpace);
+
 function clearAll() {
     operators = [];
     operands = [];
